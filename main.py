@@ -1,6 +1,7 @@
 # standard libs
 import asyncio
 import concurrent.futures
+import contextlib
 import datetime
 import difflib
 import glob
@@ -412,7 +413,7 @@ if __name__ == "__main__":  # prevents multiprocessing workers from running bot 
         :return: nothing, all processing and uploading is done in this function
         """
         with TempFileSession() as tempfilesession:
-            async with ctx.channel.typing():
+            async with contextlib.nullcontext():
                 if allowedtypes:
                     urls = await imagesearch(ctx, len(allowedtypes))
                     files = await saveurls(urls)
@@ -1363,7 +1364,7 @@ if __name__ == "__main__":  # prevents multiprocessing workers from running bot 
                 return
             # await improcessing.ytdl(url, form)
             with TempFileSession() as tempfilesession:
-                async with ctx.channel.typing():
+                async with contextlib.nullcontext():
                     # logger.info(url)
                     msg = await ctx.reply(f"{config.emojis['working']} Downloading from site...", mention_author=False)
                     try:
@@ -1981,7 +1982,7 @@ if __name__ == "__main__":  # prevents multiprocessing workers from running bot 
             :mediaparam media: Any media file.
             """
             with TempFileSession() as tempfilesession:
-                async with ctx.channel.typing():
+                async with contextlib.nullcontext():
                     file = await imagesearch(ctx, 1)
                     if file:
                         file = await saveurls(file)
@@ -2129,7 +2130,7 @@ if __name__ == "__main__":  # prevents multiprocessing workers from running bot 
             searches for MediaForge metadata
             """
             with TempFileSession() as tempfilesession:
-                async with ctx.channel.typing():
+                async with contextlib.nullcontext():
                     file = await imagesearch(ctx, 1)
                     if file:
                         file = await saveurls(file)
