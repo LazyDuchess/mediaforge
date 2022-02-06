@@ -39,8 +39,7 @@ import tempfiles
 from clogs import logger
 from improcessing import fetch
 from tempfiles import TempFileSession, get_random_string, temp_file
-
-# pip libs
+from word_filter import contains_blocked_word
 
 """
 This file contains the discord.py functions, which call other files to do the actual processing.
@@ -537,7 +536,8 @@ if __name__ == "__main__":  # prevents multiprocessing workers from running bot 
 
 
     def number_range(lower_bound: typing.Optional[number] = None, upper_bound: typing.Optional[number] = None,
-                     lower_incl: bool = True, upper_incl: bool = True, num_type: typing.Literal['float', 'int'] = 'float') -> object:
+                     lower_incl: bool = True, upper_incl: bool = True,
+                     num_type: typing.Literal['float', 'int'] = 'float') -> object:
         """
         type hint a discord.py parameter to be within a specific number range.
         :param lower_bound: lower bound of arg
@@ -2316,6 +2316,13 @@ if __name__ == "__main__":  # prevents multiprocessing workers from running bot 
             else:
                 await ctx.reply(f"{config.emojis['x']} {user.mention} is not banned.")
 
+        @commands.command()
+        @commands.is_owner()
+        async def testfilter(self, ctx: commands.Context):
+            async for msg in ctx.channel.history(limit=None):
+                if contains_blocked_word(msg.content):
+                    logger.debug(msg.content)
+
 
     class Slashscript(commands.Cog, name="Slashscript"):
         """
@@ -2420,14 +2427,13 @@ if __name__ == "__main__":  # prevents multiprocessing workers from running bot 
 
 
     @bot.check
-    def block_filter(ctx: commands.Context):
+    async def block_filter(ctx: commands.Context):
         # TODO: implement advanced regex-based filter to prevent filter bypass
         # this command is exempt because it only works on URLs and there have been issues with r/okbr
         if ctx.command.name == "videodl":
             return True
-        for block in config.blocked_words:
-            if block.lower() in ctx.message.content.lower():
-                raise commands.CheckFailure("Your command contains one or more blocked words.")
+        if contains_blocked_word(ctx.message.content):
+            raise commands.CheckFailure("Your command contains one or more blocked words.")
         return True
 
 

@@ -46,9 +46,12 @@ emojis = {
 }
 # up to 25 tips that can show when using $help tips. type \n for a newline
 tips = {
-    "Media Searching": "MediaForge automatically searches for any media in a channel. Reply to a message with the command to search that message first.",
-    "File Formats": "MediaForge supports static image formats like PNG, animated image formats like GIF, and video formats like MP4.",
-    "Self-Hosting": "MediaForge is completely open source and anyone can host a clone themself!\nhttps://github.com/HexCodeFFF/mediaforge"
+    "Media Searching": "MediaForge automatically searches for any media in a channel. Reply to a message with the "
+                       "command to search that message first.",
+    "File Formats": "MediaForge supports static image formats like PNG, animated image formats like GIF, and video "
+                    "formats like MP4.",
+    "Self-Hosting": "MediaForge is completely open source and anyone can host a clone "
+                    "themself!\nhttps://github.com/HexCodeFFF/mediaforge "
 }
 # the directory to store temporary files in. must end with a slash.
 temp_dir = "temp/"
@@ -56,10 +59,6 @@ temp_dir = "temp/"
 # configured upload limit, in bytes, for files.
 # dont change this unless you have a really good reason to. i dont have error handling for overly large files
 file_upload_limit = 8388119
-# this applies to every command. if any string arguments contain any of these words, the command will instantly
-# fail. this is intended to block hateful language like slurs. not case sensitive.
-# its in the config so i dont have to upload slurs to github...
-blocked_words = []
 # filename of the sqlite3 database. currently only used for storing server-specific prefixes.
 db_filename = "database.db"
 # default prefix for commands
@@ -71,3 +70,31 @@ heartbeatfrequency = 60
 # number of shards
 # set to None or remove and "the library will use the Bot Gateway endpoint call to figure out how many shards to use."
 shard_count = None
+
+# this applies to every command. if any string arguments contain any of these words, the command will instantly
+# fail. this is intended to block hateful language like slurs. not case sensitive. behavior can be configured below.
+# its in the config so i dont have to upload slurs to github...
+blocked_words = []
+
+# the below settings control how the text is cleaned before searching for blocked words.
+# this only effects word blocking, the alterations are discarded after.
+# replace unicode characters that look like letters with their corresponding letters
+blocked_words_clean_confusables = False
+# convert numbers into similar looking letters, like "leetspeak"
+blocked_words_clean_leet = False
+# remove all characters that aren't letters
+blocked_words_clean_to_letters = False
+# condense more than 2 duplicate characters in a row into 2 (hhheeellllllooo -> hheelloo)
+blocked_words_clean_repeated_characters = False
+# remove all whitespace
+blocked_words_clean_whitespace = False
+
+# how similar (in a % from 0-100) a word must be to a blocked word to trigger the match.
+# set to 100 to use exact matching.
+blocked_words_fuzzy_tolerance = 80
+
+# Auto-bans users if they trigger the slur filter this many times. set to 0 to disable.
+blocked_words_auto_ban = 0
+# if a user triggers the word filter, log this many of their subsequent commands. intended to be used to ban users
+# who attempt to bypass the filter. set to 0 to disable.
+blocked_words_log_commands = 0

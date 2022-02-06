@@ -46,7 +46,7 @@ the bot uses many CLI programs for media processing.
   with `sudo apt-get install exiftool` https://exiftool.org/
 - apngasm - windows executable is included. installable on linux with `sudo apt-get install apngasm`
 - glaxnimate - [downloadable on its website](https://glaxnimate.mattbas.org/download)
-    - this library is not yet used. it is needed to render lottie stickers, but
+    - ***this library is not yet used***. it is needed to render lottie stickers, but
       [I am currently having issues installing the python bindings on windows.](https://gitlab.com/mattbas/glaxnimate/-/issues/398)
 
 ### pip libraries
